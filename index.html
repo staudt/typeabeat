@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <script type="text/javascript" src="js/howler.min.js"></script>
+  <title></title> 
+</head> 
+<body>
+  
+  [-] Rest, [s] Snare, [x] Closed HH, [h] Open HH, [b] Bass, [c] Crash, [r] Ride, [t] High Tom, [m] Med Tom, [f] Floor Tom
+  
+  <script type="text/javascript">
+    var sound = new Howl({
+      urls: ['public/kit.ogg', 'public/kit.mp3'],
+      sprite: {
+        kick: [0, 420],
+        snare: [453, 434],
+        clap: [11383, 157],
+        cowbell: [908, 115],
+        hiTom: [1360, 602],
+        midTom: [1997, 851],
+        lowTom: [2894, 839],
+        hatOpen: [3756, 955],
+        hatClosed: [4734, 130],
+        ride: [4911, 962],
+        tamb: [5878, 277],
+        crash: [6830, 1267],
+        splash: [8127, 843],
+        china: [9578, 855],
+        hiAgogo: [10591, 433],
+        lowAgogo: [11095, 273]
+      }
+    });
+
+    var tempo = 120;
+    var pattern = [1,0,0,1,0,1,0,0,1,0,0,1,0,0,0,1,0];
+    
+    function playPattern(index) {
+      setTimeout(function() {
+        console.log(pattern[index]);
+        sound.play('snare');
+        index++;
+        if (index < pattern.length)
+          playPattern(index);
+      }, 60000/tempo);
+    }
+    playPattern(0);
+  </script>
+
+</body>
+</html>
