@@ -7,11 +7,24 @@
 </head> 
 <body>
   
-  [-] Rest, [s] Snare, [x] Closed HH, [h] Open HH, [b] Bass, [c] Crash, [r] Ride, [t] High Tom, [m] Med Tom, [f] Floor Tom
-  
+  [-] Rest, [s] Snare, [x] Closed HH, [h,o] Open HH, [k,b] Bass, [c] Crash, [r] Ride, [t] High Tom, [m] Med Tom, [f] Floor Tom<br>
+  [p] Splash [l] Clap [z] Tamb [i] China [a] Hi Agogo [g] Low Agogo [w] Cowbell
+  <p>
+    Tempo: <input type="text" id="tempo" value="120" />
+    Pattern: <input type="text" id="pattern" value="c--ks--sxskks-k-" />
+  </p>
+<p>
+  Examples:<br>
+    smells like teen spirit<br>
+      [120] skxkskxkskxks-k-<br>
+      [120] c--ks--sxskks-k-<br>
+      [120] x-x-s-x-x-x-s-x-<br>
+      [120] c-x-s-x-x-x-s-x-<br>
+</p>
+
   <script type="text/javascript">
     var sound = new Howl({
-      urls: ['public/kit.ogg', 'public/kit.mp3'],
+      urls: ['public/kit.ogg'],
       sprite: {
         kick: [0, 420],
         snare: [453, 434],
@@ -32,18 +45,47 @@
       }
     });
 
-    var tempo = 120;
-    var pattern = [1,0,0,1,0,1,0,0,1,0,0,1,0,0,0,1,0];
-    
+    note = {
+      s: 'snare',
+      k: 'kick', b: 'kick',
+      x: 'hatClosed', o: 'hatClosed',
+      h: 'hatOpen',
+      c: 'crash',
+      r: 'ride',
+      t: 'hiTom',
+      m: 'midTom',
+      f: 'lowTom',
+      
+      p: 'splash',
+      l: 'clap',
+      z: 'tamb',
+      i: 'china',
+      a: 'hiAgogo',
+      g: 'lowAgogo',
+      w: 'cowbell',
+    }
+
+    function getPattern() {
+      return document.getElementById("pattern").value;
+    }
+
+    function getTempo() {
+      tempo = document.getElementById("tempo").value;
+      return tempo*4;
+    }
+
     function playPattern(index) {
       setTimeout(function() {
+        pattern = getPattern();
         console.log(pattern[index]);
-        sound.play('snare');
+        sound.play(note[pattern[index]]);
         index++;
-        if (index < pattern.length)
-          playPattern(index);
-      }, 60000/tempo);
+        if (index >= pattern.length)
+          index = 0;
+        playPattern(index);
+      }, 60000/getTempo());
     }
+    
     playPattern(0);
   </script>
 
