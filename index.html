@@ -10,8 +10,11 @@
   [-] Rest, [s] Snare, [x] Closed HH, [h,o] Open HH, [k,b] Bass, [c] Crash, [r] Ride, [t] High Tom, [m] Med Tom, [f] Floor Tom<br>
   [p] Splash [l] Clap [z] Tamb [i] China [a] Hi Agogo [g] Low Agogo [w] Cowbell
   <p>
-    Tempo: <input type="text" id="tempo" value="120" />
-    Pattern: <input type="text" id="pattern" value="c--ks--sxskks-k-" />
+    Tempo: <input type="text" id="tempo" value="120" /><br>
+    Patterns:<br>
+    <input type="text" id="pattern0" value="skxkskxkskxks-k-" /> <input type="text" id="pattern0_count" size=2 value="1"><br>
+    <input type="text" id="pattern1" value="c--ks--sxskks-k-" /> <input type="text" id="pattern1_count" size=2 value="2"><br>
+    <input type="text" id="pattern2" value="x-x-s-x-x-x-s-x-" />  <input type="text" id="pattern2_count" size=2 value="2"><br>
   </p>
 <p>
   Examples:<br>
@@ -19,7 +22,6 @@
       [120] skxkskxkskxks-k-<br>
       [120] c--ks--sxskks-k-<br>
       [120] x-x-s-x-x-x-s-x-<br>
-      [120] c-x-s-x-x-x-s-x-<br>
 </p>
 
   <script type="text/javascript">
@@ -65,28 +67,45 @@
       w: 'cowbell',
     }
 
-    function getPattern() {
-      return document.getElementById("pattern").value;
+    function getPattern(pattern_number) {
+      return document.getElementById("pattern" + pattern_number).value;
+    }
+
+    function getPatternCount(pattern_number) {
+      return parseInt(document.getElementById("pattern" + pattern_number + "_count").value);
     }
 
     function getTempo() {
       tempo = document.getElementById("tempo").value;
-      return tempo*4;
+      return tempo;
     }
 
-    function playPattern(index) {
+    function playPattern(pattern_number, pattern_count, index) {
       setTimeout(function() {
-        pattern = getPattern();
-        console.log(pattern[index]);
-        sound.play(note[pattern[index]]);
+        pattern = getPattern(pattern_number);
+        //console.log(pattern_number, pattern_count, index);
+        //sound.volume = 0.8;
+        sound.play(note[pattern.charAt(index).toLowerCase()]);
         index++;
-        if (index >= pattern.length)
+        if (pattern.charAt(index)=='+') {
+            sound.play(note[pattern.charAt(index+1).toLowerCase()]);
+            index = index + 2;
+        }
+        if (index >= pattern.length) {
           index = 0;
-        playPattern(index);
-      }, 60000/getTempo());
+          pattern_count--;
+          if (pattern_count < 1) {
+            pattern_number++;
+            if (pattern_number > 2)
+                pattern_number = 0;
+            pattern_count = getPatternCount(pattern_number);
+          }
+        }
+        playPattern(pattern_number, pattern_count, index);
+      }, 15000/getTempo());
     }
     
-    playPattern(0);
+    playPattern(0, getPatternCount(0), 0);
   </script>
 
 </body>
