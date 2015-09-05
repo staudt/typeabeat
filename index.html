@@ -1,112 +1,20 @@
 <!DOCTYPE html>
-<html> 
-<head> 
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
-  <script type="text/javascript" src="js/howler.min.js"></script>
-  <title></title> 
-</head> 
-<body>
-  
-  [-] Rest, [s] Snare, [x] Closed HH, [h,o] Open HH, [k,b] Bass, [c] Crash, [r] Ride, [t] High Tom, [m] Med Tom, [f] Floor Tom<br>
-  [p] Splash [l] Clap [z] Tamb [i] China [a] Hi Agogo [g] Low Agogo [w] Cowbell
-  <p>
-    Tempo: <input type="text" id="tempo" value="120" /><br>
-    Patterns:<br>
-    <input type="text" id="pattern0" value="skxkskxkskxks-k-" /> <input type="text" id="pattern0_count" size=2 value="1"><br>
-    <input type="text" id="pattern1" value="c--ks--sxskks-k-" /> <input type="text" id="pattern1_count" size=2 value="2"><br>
-    <input type="text" id="pattern2" value="x-x-s-x-x-x-s-x-" />  <input type="text" id="pattern2_count" size=2 value="2"><br>
-  </p>
-<p>
-  Examples:<br>
-    smells like teen spirit<br>
-      [120] skxkskxkskxks-k-<br>
-      [120] c--ks--sxskks-k-<br>
-      [120] x-x-s-x-x-x-s-x-<br>
-</p>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script src="js/howler.min.js"></script>
+	</head>
+	<body>
+	
+		[-] Rest, [s] Snare, [x] Closed HH, [h,o] Open HH, [k,b] Bass, [c] Crash, [r] Ride, [t] High Tom, [m] Med Tom, [f] Floor Tom<br>
+		[p] Splash [l] Clap [z] Tamb [i] China [a] Hi Agogo [g] Low Agogo [w] Cowbell
 
-  <script type="text/javascript">
-    var sound = new Howl({
-      urls: ['public/kit.ogg'],
-      sprite: {
-        kick: [0, 420],
-        snare: [453, 434],
-        clap: [11383, 157],
-        cowbell: [908, 115],
-        hiTom: [1360, 602],
-        midTom: [1997, 851],
-        lowTom: [2894, 839],
-        hatOpen: [3756, 955],
-        hatClosed: [4734, 130],
-        ride: [4911, 962],
-        tamb: [5878, 277],
-        crash: [6830, 1267],
-        splash: [8127, 843],
-        china: [9578, 855],
-        hiAgogo: [10591, 433],
-        lowAgogo: [11095, 273]
-      }
-    });
+		<p>
+		    Tempo: <input type="text" id="tempo" value="120" /><br>
+		    Pattern:<br>
+		    <textarea id="pattern" rows="8" cols="60">skxkskxkskxks-k-</textarea>
+		</p>
 
-    note = {
-      s: 'snare',
-      k: 'kick', b: 'kick',
-      x: 'hatClosed', o: 'hatClosed',
-      h: 'hatOpen',
-      c: 'crash',
-      r: 'ride',
-      t: 'hiTom',
-      m: 'midTom',
-      f: 'lowTom',
-      
-      p: 'splash',
-      l: 'clap',
-      z: 'tamb',
-      i: 'china',
-      a: 'hiAgogo',
-      g: 'lowAgogo',
-      w: 'cowbell',
-    }
-
-    function getPattern(pattern_number) {
-      return document.getElementById("pattern" + pattern_number).value;
-    }
-
-    function getPatternCount(pattern_number) {
-      return parseInt(document.getElementById("pattern" + pattern_number + "_count").value);
-    }
-
-    function getTempo() {
-      tempo = document.getElementById("tempo").value;
-      return tempo;
-    }
-
-    function playPattern(pattern_number, pattern_count, index) {
-      setTimeout(function() {
-        pattern = getPattern(pattern_number);
-        //console.log(pattern_number, pattern_count, index);
-        //sound.volume = 0.8;
-        sound.play(note[pattern.charAt(index).toLowerCase()]);
-        index++;
-        if (pattern.charAt(index)=='+') {
-            sound.play(note[pattern.charAt(index+1).toLowerCase()]);
-            index = index + 2;
-        }
-        if (index >= pattern.length) {
-          index = 0;
-          pattern_count--;
-          if (pattern_count < 1) {
-            pattern_number++;
-            if (pattern_number > 2)
-                pattern_number = 0;
-            pattern_count = getPatternCount(pattern_number);
-          }
-        }
-        playPattern(pattern_number, pattern_count, index);
-      }, 15000/getTempo());
-    }
-    
-    playPattern(0, getPatternCount(0), 0);
-  </script>
-
-</body>
+    <script src="js/main.js"></script>
+	</body>
 </html>
