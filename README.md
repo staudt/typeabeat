@@ -1,5 +1,5 @@
 # typeabeat
-A silly little drum machine that plays one line text patterns.
+A little drum machine that plays one line text patterns. You can try it [here](http://staudt.github.io/typeabeat/).
 
 This project just barely started, so don't expect much at this point.
 
