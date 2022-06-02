@@ -25,6 +25,10 @@
 
     playPattern: function (index) {
       setTimeout(function() {
+	while (document.getElementById("pattern").value.length<2) {
+	    debug.log('waiting for a bigger pattern');
+	    await new Promise(r => setTimeout(r, 2000));
+	}
         pattern = document.getElementById("pattern").value;
         sound.play(note[pattern.charAt(index).toLowerCase()]);
         do {
